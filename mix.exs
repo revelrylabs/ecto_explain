@@ -18,7 +18,7 @@ defmodule Explain.MixProject do
       source_url: "https://github.com/revelrylabs/ecto_explain",
       homepage_url: "https://github.com/revelrylabs/ecto_explain",
       # The main page in the docs
-      docs: [main: "Ecto Explain", extras: ["README.md"]]
+      docs: [main: "Ecto.Explain", extras: ["README.md"]]
     ]
   end
 
