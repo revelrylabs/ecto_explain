@@ -1,6 +1,6 @@
-defmodule Ecto.Explain.Repo.Test do
+defmodule Ecto.ExplainTest do
   use ExUnit.Case
-  alias Ecto.Explain.Test.Repo
+  alias Ecto.ExplainTest.Repo
   import Ecto.Query, warn: false
 
   defmodule Post do
@@ -13,7 +13,7 @@ defmodule Ecto.Explain.Repo.Test do
   end
 
   setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Ecto.Explain.Test.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Ecto.ExplainTest.Repo)
   end
 
   test "explain all" do
@@ -27,7 +27,7 @@ defmodule Ecto.Explain.Repo.Test do
   end
 
   test "explain format json" do
-    assert %Ecto.Query{} = Repo.explain(from(posts in Post), format: :json)
+    assert %Ecto.Query{} = Repo.explain(from(posts in Post), format: :json, analyze: true)
   end
 
   test "explain format yaml" do

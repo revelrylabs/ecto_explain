@@ -1,4 +1,4 @@
-defmodule Ecto.Explain.Repo do
+defmodule Ecto.Explain do
   @moduledoc """
   Explain function for Ecto.Repo
   """

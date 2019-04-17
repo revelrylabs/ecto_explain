@@ -1,7 +1,7 @@
 {:ok, _} = Application.ensure_all_started(:postgrex)
-{:ok, _pid} = Ecto.Explain.Test.Repo.start_link
+{:ok, _pid} = Ecto.ExplainTest.Repo.start_link
 
-defmodule Ecto.Explain.Test.Migrations do
+defmodule Ecto.ExplainTest.Migrations do
   use Ecto.Migration
 
   def change do
@@ -13,7 +13,7 @@ defmodule Ecto.Explain.Test.Migrations do
   end
 end
 
-_ = Ecto.Migrator.up(Ecto.Explain.Test.Repo, 0, Ecto.Explain.Test.Migrations, log: false)
+_ = Ecto.Migrator.up(Ecto.ExplainTest.Repo, 0, Ecto.ExplainTest.Migrations, log: false)
 ExUnit.start()
 
-Ecto.Adapters.SQL.Sandbox.mode(Ecto.Explain.Test.Repo, :manual)
+Ecto.Adapters.SQL.Sandbox.mode(Ecto.ExplainTest.Repo, :manual)

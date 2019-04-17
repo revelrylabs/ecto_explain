@@ -1,6 +1,6 @@
 # Explain
 
-**TODO: Add description**
+Adds explain function to Ecto.Repo
 
 ## Installation
 

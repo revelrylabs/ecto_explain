@@ -10,7 +10,15 @@ defmodule Explain.MixProject do
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      description: description()
+      description: description(),
+      package: package(),
+
+      # Docs
+      name: "Ecto Explain",
+      source_url: "https://github.com/revelrylabs/ecto_explain",
+      homepage_url: "https://github.com/revelrylabs/ecto_explain",
+      # The main page in the docs
+      docs: [main: "Ecto Explain", extras: ["README.md"]]
     ]
   end
 
@@ -34,5 +42,17 @@ defmodule Explain.MixProject do
     """
     Explain with Ecto.
     """
+  end
+
+  defp package do
+    [
+      files: ["lib", "mix.exs", "README.md", "LICENSE", "CHANGELOG.md"],
+      maintainers: ["Revelry Labs"],
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/revelrylabs/ecto_explain"
+      },
+      build_tools: ["mix"]
+    ]
   end
 end
