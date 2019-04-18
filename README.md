@@ -14,9 +14,42 @@ defmodule Ecto.ExplainTest.Repo do
     adapter: Ecto.Adapters.Postgres
   use Ecto.Explain
 end
+```
 
+```elixir
 # posts.ex
 Repo.explain(from(p in Post))
+
+Update on posts p0  (cost=0.00..10.70 rows=70 width=1046)
+  ->  Seq Scan on posts p0  (cost=0.00..10.70 rows=70 width=1046)
+```
+
+```elixir
+Repo.explain(from(posts in Post), format: :json, analyze: true)
+
+[
+  [
+    {
+      "Execution Time": 0.084,
+      "Plan": {
+        "Actual Loops": 1,
+        "Actual Rows": 0,
+        "Actual Startup Time": 0.027,
+        "Actual Total Time": 0.027,
+        "Alias": "p0",
+        "Node Type": "Seq Scan",
+        "Parallel Aware": false,
+        "Plan Rows": 70,
+        "Plan Width": 1040,
+        "Relation Name": "posts",
+        "Startup Cost": 0.0,
+        "Total Cost": 10.7
+      },
+      "Planning Time": 0.585,
+      "Triggers": []
+    }
+  ]
+]
 ```
 
 
