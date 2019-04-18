@@ -1,1 +1,1 @@
-Postgrex.Types.define(EctoExplain.PostgresTypes, [], [])
+Postgrex.Types.define(EctoExplain.PostgresTypes, [], json: Jason)
