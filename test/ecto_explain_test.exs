@@ -26,11 +26,15 @@ defmodule Ecto.ExplainTest do
     assert %Post{title: "original title"} = Repo.get!(Post, post.id)
   end
 
-  test "explain format json" do
+  test "explain and analyze format text " do
     assert %Ecto.Query{} = Repo.explain(from(posts in Post), format: :json, analyze: true)
   end
 
-  test "explain format yaml" do
+  test "explain and analyze format json" do
+    assert %Ecto.Query{} = Repo.explain(from(posts in Post), format: :json, analyze: true)
+  end
+
+  test "explain and analyze format yaml" do
     assert %Ecto.Query{} = Repo.explain(from(posts in Post), format: :yaml, analyze: true)
   end
 end
