@@ -8,7 +8,14 @@ defmodule Ecto.Explain do
       @doc """
       Runs the EXPLAIN ANALYZE command on a query and gives the output
 
-      Available options:
+      ### Available options:
+
+      | Option     | Default | Description                                                             |
+      |------------|---------|-------------------------------------------------------------------------|
+      | op         | :all    | Passed to Ecto.Adapters.SQL.to_sql (:all | :update_all | :delete_all)   |
+      | analyze    | false   |                                                                         |
+      | format     | :json   | :yaml | :json | :text                                                   |
+      | log_output | true    |                                                                         |
 
       """
       def explain(query, opts \\ []) do
