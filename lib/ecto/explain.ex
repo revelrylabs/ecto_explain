@@ -4,7 +4,7 @@ defmodule Ecto.Explain do
   """
 
   defmacro __using__(_) do
-    quote do
+    quote location: :keep do
       @doc """
       Runs the EXPLAIN ANALYZE command on a query and gives the output
       """
