@@ -7,35 +7,49 @@ defmodule Ecto.Explain do
     quote location: :keep do
       @doc """
       Runs the EXPLAIN ANALYZE command on a query and gives the output
+
+      Available options:
+
       """
       def explain(query, opts \\ []) do
-        {op, opts} = Keyword.pop(opts, :op, :all)
-        {format, _opts} = Keyword.pop(opts, :format, :text)
-        {analyze, _opts} = Keyword.pop(opts, :analyze, false)
+        opts = put_defaults(opts)
 
-        {sql, params} = Ecto.Adapters.SQL.to_sql(op, __MODULE__, query)
+        {sql, params} = Ecto.Adapters.SQL.to_sql(opts[:op], __MODULE__, query)
 
-        sql = "EXPLAIN (#{analyze_to_sql(analyze)}, #{format_to_sql(format)}) #{sql}"
+        sql = "EXPLAIN (#{analyze_to_sql(opts[:analyze])}, #{format_to_sql(opts[:format])}) #{sql}"
 
-        __MODULE__.transaction(fn ->
-          __MODULE__
-          |> Ecto.Adapters.SQL.query!(sql, params)
-          |> format_output(format)
+        {:error, explain} =
+          __MODULE__.transaction(fn ->
+            __MODULE__
+            |> Ecto.Adapters.SQL.query!(sql, params)
+            |> __MODULE__.rollback()
+          end)
 
-          __MODULE__.rollback(:explain_analyze)
-        end)
 
-        query
+        if opts[:log_output] do
+          log_output(explain, opts[:format])
+          query
+        else
+          explain
+        end
       end
 
-      defp format_output(results, :text) do
+      defp put_defaults(opts) do
+        opts
+        |> Keyword.put_new(:op, :all)
+        |> Keyword.put_new(:format, :json)
+        |> Keyword.put_new(:analyze, false)
+        |> Keyword.put_new(:log_output, true)
+      end
+
+      defp log_output(results, :text) do
         results
         |> Map.get(:rows)
         |> Enum.join("\n")
-        |> format_output()
+        |> IO.puts()
       end
 
-      defp format_output(results, :json) do
+      defp log_output(results, :json) do
         results
         |> Map.get(:rows)
         |> List.first()
@@ -43,14 +57,12 @@ defmodule Ecto.Explain do
         |> IO.puts()
       end
 
-      defp format_output(results, :yaml) do
+      defp log_output(results, :yaml) do
         results
         |> Map.get(:rows)
         |> List.first()
-        |> format_output()
+        |> IO.puts()
       end
-
-      defp format_output(str), do: IO.puts(str)
 
       defp format_to_sql(:text), do: "FORMAT TEXT"
       defp format_to_sql(:json), do: "FORMAT JSON"
