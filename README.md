@@ -61,7 +61,7 @@ by adding `ecto_explain` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ecto_explain, "~> 0.1.0"}
+    {:ecto_explain, "~> 0.1.2"}
   ]
 end
 ```

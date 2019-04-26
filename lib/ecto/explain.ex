@@ -5,19 +5,6 @@ defmodule Ecto.Explain do
 
   defmacro __using__(_) do
     quote location: :keep do
-      @doc """
-      Runs the EXPLAIN ANALYZE command on a query and gives the output
-
-      ### Available options:
-
-      | Option     | Default | Description                                                             |
-      |------------|---------|-------------------------------------------------------------------------|
-      | op         | :all    | Passed to Ecto.Adapters.SQL.to_sql (:all | :update_all | :delete_all)   |
-      | analyze    | false   |                                                                         |
-      | format     | :json   | :yaml | :json | :text                                                   |
-      | log_output | true    |                                                                         |
-
-      """
       def explain(query, opts \\ []) do
         opts = put_defaults(opts)
 
@@ -31,7 +18,6 @@ defmodule Ecto.Explain do
             |> Ecto.Adapters.SQL.query!(sql, params)
             |> __MODULE__.rollback()
           end)
-
 
         if opts[:log_output] do
           log_output(explain, opts[:format])
