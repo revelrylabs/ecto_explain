@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/revelrylabs/ecto_soft_delete.svg?branch=master)](https://travis-ci.org/revelrylabs/ecto_explain)
+[![Hex.pm](https://img.shields.io/hexpm/dt/ecto_soft_delete.svg)](https://hex.pm/packages/ecto_explain)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Coverage Status](https://opencov.prod.revelry.net/projects/34/badge.svg)](https://opencov.prod.revelry.net/projects/34)
+
 # Explain
 
 Adds explain function to Ecto.Repo
