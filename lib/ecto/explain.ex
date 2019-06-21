@@ -1,6 +1,15 @@
 defmodule Ecto.Explain do
   @moduledoc """
-  Explain function for Ecto.Repo
+  Explain functions for `Ecto.Repo`.
+
+  The following functions are at your disposal:
+
+  @spec explain(module() | Ecto.Query.t()) :: none()
+  explain/1
+
+
+  @spec explain(module() | Ecto.Query.t(), keyword()) :: none()
+  explain/2
   """
 
   defmacro __using__(_) do
@@ -10,7 +19,8 @@ defmodule Ecto.Explain do
 
         {sql, params} = Ecto.Adapters.SQL.to_sql(opts[:op], __MODULE__, query)
 
-        sql = "EXPLAIN (#{analyze_to_sql(opts[:analyze])}, #{format_to_sql(opts[:format])}) #{sql}"
+        sql =
+          "EXPLAIN (#{analyze_to_sql(opts[:analyze])}, #{format_to_sql(opts[:format])}) #{sql}"
 
         {:error, explain} =
           __MODULE__.transaction(fn ->
