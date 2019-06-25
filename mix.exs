@@ -38,7 +38,7 @@ defmodule Explain.MixProject do
     [
       {:ecto, "~> 2.2.0", only: [:test]},
       {:postgrex, "~> 0.13", only: [:test]},
-      {:jason, "~> 1.1", only: [:test]},
+      {:jason, "~> 1.1", only: [:dev, :test]},
       {:ex_doc, ">= 0.0.0", only: [:dev, :test]},
       {:excoveralls, "~> 0.8", only: [:dev, :test]}
     ]
