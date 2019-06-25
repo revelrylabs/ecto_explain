@@ -1,19 +1,11 @@
 defmodule Ecto.ExplainTest do
   use ExUnit.Case
-  alias Ecto.ExplainTest.Repo
+  alias Ecto.ExplainTest.{Post, Repo}
   import Ecto.Query, warn: false
-
-  defmodule Post do
-    use Ecto.Schema
-
-    schema "posts" do
-      field(:title, :string)
-      field(:body, :string)
-    end
-  end
+  alias Ecto.Adapters.SQL.Sandbox
 
   setup do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Ecto.ExplainTest.Repo)
+    :ok = Sandbox.checkout(Ecto.ExplainTest.Repo)
   end
 
   test "explain all" do
@@ -46,27 +38,34 @@ defmodule Ecto.ExplainTest do
   test "log output false" do
     query = from(posts in Post)
     refute Repo.explain(query, log_output: false) == query
+
     assert %Postgrex.Result{
-      rows: [[[%{"Plan" => %{}}]]]
-    } = Repo.explain(query, log_output: false)
+             rows: [[[%{"Plan" => %{}}]]]
+           } = Repo.explain(query, log_output: false)
   end
 
   test "explain analyze" do
     query = from(posts in Post)
 
     assert %Postgrex.Result{
-      rows: [[[%{
-        "Execution Time" => execution_time,
-        "Planning Time" => planning_time,
-        "Triggers" => [],
-        "Plan" => %{
-          "Actual Loops" => actual_loops,
-          "Actual Rows" => actual_rows,
-          "Actual Startup Time" => actual_startup_time,
-          "Actual Total Time" => actual_total_time,
-        }
-      }]]]
-    } =  Repo.explain(query, analyze: true, log_output: false)
+             rows: [
+               [
+                 [
+                   %{
+                     "Execution Time" => execution_time,
+                     "Planning Time" => planning_time,
+                     "Triggers" => [],
+                     "Plan" => %{
+                       "Actual Loops" => actual_loops,
+                       "Actual Rows" => actual_rows,
+                       "Actual Startup Time" => actual_startup_time,
+                       "Actual Total Time" => actual_total_time
+                     }
+                   }
+                 ]
+               ]
+             ]
+           } = Repo.explain(query, analyze: true, log_output: false)
 
     assert is_float(execution_time)
     assert is_float(planning_time)

@@ -1,9 +1,13 @@
+sudo: false
 language: elixir
-dist: trusty
 elixir:
   - 1.8
 otp_release:
-  - 21.1
+  - 21.2
+cache:
+  directories:
+    - _build
+    - deps
 addons:
   postgresql: '9.5'
 services:
@@ -12,8 +16,13 @@ before_script:
   - gem install coveralls-multi --no-document
   - MIX_ENV=test mix ecto.create
 script:
+  - mix test --exclude pending --trace
   - MIX_ENV=test mix coveralls.json
   - coveralls-multi
+  - mix credo --strict
+  - mix format --check-formatted
+before_deploy:
+  - mix compile
 deploy:
   skip_cleanup: true
   provider: script

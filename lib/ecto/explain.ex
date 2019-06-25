@@ -2,6 +2,7 @@ defmodule Ecto.Explain do
   @moduledoc """
   Explain functions for `Ecto.Repo`.
   """
+  alias Ecto.Adapters.SQL
 
   @doc false
   defmacro __using__(_) do
@@ -9,7 +10,7 @@ defmodule Ecto.Explain do
       def explain(query, opts \\ []) do
         opts = put_defaults(opts)
 
-        {sql, params} = Ecto.Adapters.SQL.to_sql(opts[:op], __MODULE__, query)
+        {sql, params} = SQL.to_sql(opts[:op], __MODULE__, query)
 
         sql =
           "EXPLAIN (#{analyze_to_sql(opts[:analyze])}, #{format_to_sql(opts[:format])}) #{sql}"
@@ -17,7 +18,7 @@ defmodule Ecto.Explain do
         {:error, explain} =
           __MODULE__.transaction(fn ->
             __MODULE__
-            |> Ecto.Adapters.SQL.query!(sql, params)
+            |> SQL.query!(sql, params)
             |> __MODULE__.rollback()
           end)
 
@@ -111,5 +112,6 @@ defmodule Ecto.Explain do
       %Postgrex.Result{rows: [[[%{"Plan" => %{}}]]]} = MyRepo.explain(query, log_output: false)
       ```
   """
-  @callback explain(queryable :: Ecto.Queryable.t(), opts :: Keyword.t()) :: Ecto.Queryable.t() | []
+  @callback explain(queryable :: Ecto.Queryable.t(), opts :: Keyword.t()) ::
+              Ecto.Queryable.t() | []
 end

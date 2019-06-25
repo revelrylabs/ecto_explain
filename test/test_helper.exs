@@ -1,14 +1,15 @@
 {:ok, _} = Application.ensure_all_started(:postgrex)
-{:ok, _pid} = Ecto.ExplainTest.Repo.start_link
+{:ok, _pid} = Ecto.ExplainTest.Repo.start_link()
 
 defmodule Ecto.ExplainTest.Migrations do
   use Ecto.Migration
 
   def change do
-    drop_if_exists table(:posts)
+    drop_if_exists(table(:posts))
+
     create table(:posts) do
-      add :title, :string
-      add :body, :string
+      add(:title, :string)
+      add(:body, :string)
     end
   end
 end
