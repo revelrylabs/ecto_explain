@@ -1,17 +1,9 @@
 defmodule Ecto.Explain do
   @moduledoc """
   Explain functions for `Ecto.Repo`.
-
-  The following functions are at your disposal:
-
-  @spec explain(module() | Ecto.Query.t()) :: none()
-  explain/1
-
-
-  @spec explain(module() | Ecto.Query.t(), keyword()) :: none()
-  explain/2
   """
 
+  @doc false
   defmacro __using__(_) do
     quote location: :keep do
       def explain(query, opts \\ []) do
@@ -75,4 +67,49 @@ defmodule Ecto.Explain do
       defp analyze_to_sql(false), do: "ANALYZE false"
     end
   end
+
+  @doc """
+  Fetches the execution plan of a given query. More information on postgres
+  explain [here](https://www.postgresql.org/docs/current/sql-explain.html).
+
+  ## Options
+      * `log_output` - Defaults to true. You can optionally set this option to
+      false. When false the explain function will return the execution plan of
+      the given query.
+
+      * `analyze` - Defaults to false. Carry out the command and show actual run
+      times and other statistics.
+
+      * `format` - Specify the output format, which can be `:text`, `:json`, or
+      `:yaml`. Defaults to `:json`.
+
+      * `op` - The first argument passed to `Ecto.Adapters.SQL.to_sql`.
+      Defaults to `:all`. Other options are `:update_all` or `:delete_all`.
+
+  ## Example
+
+
+      query = select(Post, [p], p.title)
+
+      # By default explain logs the execution plan and returns the given query.
+
+      ```
+      MyRepo.explain(query) == query
+      ```
+
+      # Because explain returns the given query it can be used inside a pipeline.
+
+      ```
+      query
+      |> MyRepo.explain()
+      |> MyRepo.all()
+      ```
+
+      # It can also be set to return the execution plan instead for programmatic analysis.
+
+      ```
+      %Postgrex.Result{rows: [[[%{"Plan" => %{}}]]]} = MyRepo.explain(query, log_output: false)
+      ```
+  """
+  @callback explain(queryable :: Ecto.Queryable.t(), opts :: Keyword.t()) :: Ecto.Queryable.t() | []
 end

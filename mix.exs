@@ -4,7 +4,7 @@ defmodule Explain.MixProject do
   def project do
     [
       app: :ecto_explain,
-      version: "0.1.2",
+      version: "0.1.3",
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -30,8 +30,8 @@ defmodule Explain.MixProject do
 
   defp deps do
     [
-      {:ecto, "~> 2.1", only: [:test]},
-      {:postgrex, ">= 0.0.0", only: [:test]},
+      {:ecto, "~> 2.2.0", only: [:test]},
+      {:postgrex, "~> 0.13", only: [:test]},
       {:jason, "~> 1.1", only: [:test]},
       {:ex_doc, ">= 0.0.0", only: [:dev, :test]}
     ]
