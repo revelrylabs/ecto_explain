@@ -2,7 +2,7 @@ defmodule Ecto.Explain do
   @moduledoc """
   Explain function for Ecto.Repo
   """
-
+  require Logger
   defmacro __using__(_) do
     quote location: :keep do
       def explain(query, opts \\ []) do
@@ -39,7 +39,7 @@ defmodule Ecto.Explain do
         results
         |> Map.get(:rows)
         |> Enum.join("\n")
-        |> IO.puts()
+        |> Logger.warn()
       end
 
       defp log_output(results, :json) do
