@@ -43,6 +43,7 @@ defmodule Ecto.Explain do
       end
 
       defp log_output(results, :json) do
+        require Logger
         results
         |> Map.get(:rows)
         |> List.first()
