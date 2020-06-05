@@ -47,7 +47,7 @@ defmodule Ecto.Explain do
         |> Map.get(:rows)
         |> List.first()
         |> Jason.encode!(pretty: true)
-        |> IO.puts()
+        |> Logger.warn()
       end
 
       defp log_output(results, :yaml) do
