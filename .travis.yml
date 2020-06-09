@@ -10,7 +10,6 @@ services:
   - postgresql
 before_script:
   - gem install coveralls-multi --no-document
-  - cp config/test.exs.travis config/test.exs
   - MIX_ENV=test mix ecto.create
 script:
   - MIX_ENV=test mix coveralls.json

@@ -4,6 +4,8 @@ defmodule Ecto.Explain do
   """
   defmacro __using__(_) do
     quote location: :keep do
+      require Logger
+
       def explain(query, opts \\ []) do
         opts = put_defaults(opts)
 
@@ -35,7 +37,6 @@ defmodule Ecto.Explain do
       end
 
       defp log_output(results, :text) do
-        require Logger
         results
         |> Map.get(:rows)
         |> Enum.join("\n")
@@ -43,7 +44,6 @@ defmodule Ecto.Explain do
       end
 
       defp log_output(results, :json) do
-        require Logger
         results
         |> Map.get(:rows)
         |> List.first()
@@ -55,7 +55,7 @@ defmodule Ecto.Explain do
         results
         |> Map.get(:rows)
         |> List.first()
-        |> IO.puts()
+        |> Logger.warn()
       end
 
       defp format_to_sql(:text), do: "FORMAT TEXT"
