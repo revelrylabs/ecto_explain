@@ -1,6 +1,6 @@
 defmodule Ecto.Explain do
   @moduledoc """
-  Explain function for Ecto.Repo
+  Explain function for `Ecto.Repo`.
   """
   defmacro __using__(_) do
     quote location: :keep do
