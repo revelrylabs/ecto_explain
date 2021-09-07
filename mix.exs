@@ -1,10 +1,14 @@
 defmodule Explain.MixProject do
   use Mix.Project
 
+  @source_url "https://github.com/revelrylabs/ecto_explain"
+  @version "0.1.3"
+
   def project do
     [
       app: :ecto_explain,
-      version: "0.1.3",
+      name: "Ecto Explain",
+      version: @version,
       elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -17,13 +21,8 @@ defmodule Explain.MixProject do
         "coveralls.html": :test
       ],
       deps: deps(),
-      description: description(),
-      package: package(),
-      # Docs
-      name: "Ecto Explain",
-      source_url: "https://github.com/revelrylabs/ecto_explain",
-      homepage_url: "https://github.com/revelrylabs/ecto_explain",
-      docs: [main: "readme", extras: ["README.md"]],
+      docs: docs(),
+      package: package()
     ]
   end
 
@@ -39,26 +38,36 @@ defmodule Explain.MixProject do
       {:ecto_sql, "~> 3.1.3", only: [:test]},
       {:postgrex, "~> 0.14.3", only: [:test]},
       {:jason, "~> 1.0", only: [:dev, :test]},
-      {:ex_doc, ">= 0.0.0", only: [:dev, :test]},
+      {:ex_doc, ">= 0.0.0", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.8", only: [:dev, :test]}
     ]
   end
 
-  defp description do
-    """
-    Explain with Ecto.
-    """
-  end
-
   defp package do
     [
-      files: ["lib", "mix.exs", "README.md", "LICENSE", "CHANGELOG.md"],
+      description: "Explain with Ecto.",
+      files: ["lib", "mix.exs", "README.md", "LICENSE.md", "CHANGELOG.md"],
       maintainers: ["Revelry Labs"],
       licenses: ["MIT"],
+      build_tools: ["mix"],
       links: %{
-        "GitHub" => "https://github.com/revelrylabs/ecto_explain"
-      },
-      build_tools: ["mix"]
+        "Changelog" => "https://hexdocs.pm/ecto_explain/changelog.html",
+        "GitHub" => @source_url
+      }
+    ]
+  end
+
+  defp docs do
+    [
+      extras: [
+        "LICENSE.md": [title: "License"],
+        "README.md": [title: "Overview"]
+      ],
+      main: "readme",
+      source_url: @source_url,
+      source_ref: "v#{@version}",
+      homepage_url: @source_url,
+      formatters: ["html"]
     ]
   end
 end
